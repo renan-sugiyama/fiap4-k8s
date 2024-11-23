@@ -9,9 +9,7 @@ kubectl delete --all secrets
 
 ---------------------------------------------
 
-kubectl apply -f mongodb/secrets.yaml
-kubectl apply -f mongodb/pod-svc-mongodb.yaml
-kubectl apply -f mongodb/pod-mongodb.yaml
+kubectl apply -f mongodb
 kubectl port-forward service/mongodb 32017:27017
 
 kubectl apply -f create
