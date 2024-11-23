@@ -1,0 +1,45 @@
+networks:
+  server-net:
+    driver: bridge
+    
+services: 
+  rabbitmq:
+    image: masstransit/rabbitmq:latest
+    container_name: "RabbitMQ"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    user: root
+    ports:
+      - "8081:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: dockerfile-prometheus.yml
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  grafana-storage:
+    external: true

@@ -1,0 +1,20 @@
+kubectl delete --all svc
+kubectl delete --all pods
+kubectl delete --all configmap
+kubectl delete --all deployment
+kubectl delete --all rs
+kubectl delete --all secrets
+
+
+
+---------------------------------------------
+
+kubectl apply -f mongodb/secrets.yaml
+kubectl apply -f mongodb/pod-svc-mongodb.yaml
+kubectl apply -f mongodb/pod-mongodb.yaml
+kubectl port-forward service/mongodb 32017:27017
+
+kubectl apply -f create
+kubectl apply -f delete
+kubectl apply -f read
+kubectl apply -f update

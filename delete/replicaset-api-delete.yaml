@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: delete-contacts-rs
+spec:
+  template:
+    metadata:
+      name: delete-contacts-app
+      labels:
+        app: delete-contacts-app
+    spec:
+      containers:
+      - name: web-delete
+        image: renansugiyama/fiap-3-delete:latest
+        ports:
+        - containerPort: 8080
+  replicas: 2
+  selector:
+    matchLabels:
+      app: delete-contacts-app

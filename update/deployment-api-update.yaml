@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: update-contacts-deployment
+  labels:
+    app: update-contacts-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: update-contacts-deployment
+  template:
+    metadata:
+      labels:
+        app: update-contacts-deployment
+    spec:
+      containers:
+      - name: web-update
+        image: renansugiyama/fiap-3-update:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10

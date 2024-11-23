@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: create-contacts-deployment
+  labels:
+    app: create-contacts-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: create-contacts-deployment
+  template:
+    metadata:
+      labels:
+        app: create-contacts-deployment
+    spec:
+      containers:
+      - name: web-create
+        image: renansugiyama/fiap-3-create:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10

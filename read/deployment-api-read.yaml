@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: read-contacts-deployment
+  labels:
+    app: read-contacts-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: read-contacts-deployment
+  template:
+    metadata:
+      labels:
+        app: read-contacts-deployment
+    spec:
+      containers:
+      - name: web-read
+        image: renansugiyama/fiap-3-read:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10

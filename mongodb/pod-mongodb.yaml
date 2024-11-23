@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb-contacts
+  labels:
+    app: mongodb-contacts
+    instance: contacts-instance-1
+  annotations:
+    author: Renan Sugiyama
+    description: "Pod instance 1 for mongodb contacts app"
+    app-version: 1.0.0
+spec:
+  containers:
+  - name: mongodb
+    image: mongo:latest
+    args:
+      - --bind_ip
+      - 0.0.0.0
+    ports:
+    - containerPort: 27017
+    volumeMounts:
+    - name: shared-data-mongodb
+      mountPath: /data/db
+    env:
+      - name: MONGO_INITDB_ROOT_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: mongodb-contacts-secrets
+            key: MONGO_USER
+      - name: MONGO_INITDB_ROOT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mongodb-contacts-secrets
+            key: MONGO_PASS
+  volumes:
+  - name: shared-data-mongodb
+    hostPath:
+      path: /Users/renansugiyama/Desktop/fase3/fiap4/data
